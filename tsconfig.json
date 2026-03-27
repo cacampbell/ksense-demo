@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "module": "nodenext",
+      "moduleResolution": "nodenext",
+      "allowSyntheticDefaultImports": true,
+      "noEmit": true,
+      "isolatedModules": true,
+      "strict": true,
+      "baseUrl": "."
+    },
+    "include": [
+      "**/*.ts",
+      "**/*.d.ts",
+      "**/*.vue"
+    ],
+    "exclude": ["node_modules"]
+  }
