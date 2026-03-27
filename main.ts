@@ -1,5 +1,6 @@
 import axios, { AxiosError, isAxiosError } from "axios";
 import { configDotenv } from "dotenv";
+import { assert } from "node:console";
 
 const PatientGender = ["M", "F"] as const;
 type PatientGender = typeof PatientGender[number];
@@ -99,23 +100,46 @@ function convertPatientData(patientResponse: PatientResponse): Patient {
 
 // function that gets all patient data once and converts it to domain objects
 async function getPatientData(): Promise<Patient[]> {
-    const results: Patient[] = [];
-    // const backoff = 30;
+    var results: Patient[] = [];
+    const backoff = 200;
+    var maxPages = -1;
+    var totalPatients = -1;
 
     while (true) {
         try {
             const response = (await api.get<PatientsResponse>("patients")).data;
+            
+            // Note total patients expected
+            totalPatients = response.pagination.total;
+
+            // Get max pages
+            maxPages = response.pagination.totalPages;
+
+            // Add patient data to total list
             const intResults = response.data.map((patientResp: PatientResponse) => convertPatientData(patientResp));
-            console.log(intResults);
-            break;
+            results = results.concat(intResults);
+            
+            // If more than one page and currently on a lesser page, increment page
+            if (api.defaults.params["page"] == maxPages) {
+                break;
+            } else {
+                api.defaults.params["page"] += 1;
+            }
         } catch (error) {
             if (isAxiosError(error)) {
-                
+                if (error.response?.status === 429) { // rate limited
+                    await Promise.resolve(async () => setTimeout(() => null, backoff));
+                    continue;
+                }
             }
         }
     }
 
+    // quick check
+    assert(totalPatients == results.length);
     return results;
 }
 
-await getPatientData();
+// Fetch patients
+const patients = await getPatientData();
+console.log(patients);
