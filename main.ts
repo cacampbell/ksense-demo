@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 import { configDotenv } from "dotenv";
 
 const PatientGender = ["M", "F"] as const;
