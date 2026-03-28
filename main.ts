@@ -10,7 +10,7 @@ type PatientGender = typeof PatientGender[number];
 type PatientDiagnosis = string; // ?
 type PatientMedicationList = string; // ?
 
-type PatientBloodPressure = { systolic: number, diastoic: number };
+type PatientBloodPressure = { systolic: number, diastolic: number };
 
 type ResponsePagination = {
     page: number;
@@ -97,7 +97,7 @@ function parseBP(bloodPressureString: string): PatientBloodPressure | null {
     const parts = bloodPressureString.split("/");
     return {
         systolic: Number.parseInt(parts[0]),
-        diastoic: Number.parseInt(parts[1])
+        diastolic: Number.parseInt(parts[1])
     }
 }
 
@@ -194,7 +194,7 @@ function assessBloodPressure(patient: Patient): number {
 
     // shorter
     const sys = patient.blood_pressure.systolic;
-    const dia = patient.blood_pressure.diastoic;
+    const dia = patient.blood_pressure.diastolic;
 
     // use highest score for data that is present
     // sys >= 140 OR dia >= 90
