@@ -280,4 +280,6 @@ const patients = await getPatientData();
 // Score patients
 const alertLists = calculateRiskScores(patients);
 
-console.log(alertLists);
+// Submit for grading
+const response = await api.post("submit-assessment", alertLists);
+console.log(response.data);
