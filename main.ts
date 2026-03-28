@@ -31,10 +31,10 @@ type ResponseMetadata = {
 interface PatientResponse {
     patient_id: string;
     name?: string;
-    age?: number | string;
+    age?: string;
     gender?: PatientGender;
     blood_pressure?: string;
-    temperature?: number | string;
+    temperature?: string;
     visit_date?: string;
     diagnosis?: PatientDiagnosis;
     medications?: PatientMedicationList;
